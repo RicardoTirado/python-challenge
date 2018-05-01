@@ -1,0 +1,103 @@
+--1a view first & last names of all actor table
+SELECT first_name, last_name FROM actor;
+
+--1b capitalize first & last names
+UPDATE actor SET first_name = UPPER(first_name)
+UPDATE actor SET last_name = UPPER(last_name);
+--combine first & last names into one column
+SELECT concat(first_name, last_name) as actor_name from actor;
+
+--2a first all actors with first name 'CHRISTOPHER'
+SELECT * FROM actor WHERE first_name = 'CHRISTOPHER';
+
+--2b actors whose last name contains letters 'GEN'
+SELECT * FROM actor WHERE last_name LIKE '%GEN%';
+
+--2c actors whose last name contains letters 'LI'
+SELECT * FROM actor WHERE last_name LIKE '%LI%' 
+ORDER BY last_name, first_name;
+
+--2d display ID & country of 3
+SELECT country_id, country FROM country WHERE country IN('Afghanistan', 'Bangladesh', 'China');
+
+--3a add 'middle_name' column to actor table
+ALTER TABLE actor
+ADD COLUMN middle_name VARCHAR(45); 
+--PostgresSQL has no option to specify position of new column
+
+---3b change last name data type to BLOBS
+ALTER TABLE actor 
+ALTER COLUMN last_name TYPE BLOBS;
+--PostgresSQL does not support BLOB data type
+
+--3c delete 'middle_name' column from actor table
+ALTER TABLE actor DROP middle_name;
+
+--4a list last names and count of last names
+SELECT last_name, COUNT(last_name)
+FROM actor
+GROUP BY last_name
+ORDER BY last_name;
+
+--4b list last names and count of last names with minimum of 2
+SELECT last_name, COUNT(last_name)
+FROM actor
+GROUP BY last_name
+HAVING COUNT (last_name)>1
+ORDER BY last_name;
+
+--4c replace GROUCHO WILLIAMS with HARPO WILLIAMS
+UPDATE actor SET first_name = REPLACE (first_name, 'GROUCHO', 'HARPO')
+SELECT first_name, last_name FROM actor
+ORDER by last_name;
+
+--4d replace first name HARPO to GROUCHO , otherwise MUCHO GROUCHO
+
+--5a recreate schema of address table
+CREATE TABLE address_template (
+	address_id SERIAL PRIMARY KEY NOT NULL,
+	address VARCHAR (50) NOT NULL,
+	address2 VARCHAR (50),
+	district VARCHAR (20) NOT NULL,
+	city_id INTEGER NOT NULL,
+	postal_code INTEGER NOT NULL,
+	phone INTEGER NOT NULL,
+	last_update TIMESTAMP WITH TIME ZONE NOT NULL
+	);
+
+--6a join first name, last name, & address using staff & address tables
+SELECT staff.*, address.address
+FROM staff, address 
+WHERE staff.address_id = address.address_id;
+
+--6b join staff & payment tables and sum payment amounts
+SELECT staff.staff_id, staff.first_name, staff.last_name, payment.AM as total_amount
+FROM staff 
+INNER JOIN (SELECT staff_id, SUM(amount) AS AM FROM payment GROUP BY staff_id)payment 
+ON payment.staff_id = staff.staff_id;
+
+--6c list films and number of actors
+SELECT film.film_id, film.title, COUNT(film_actor.actor_id) AS total_actors
+FROM film_actor 
+INNER JOIN film  
+ON film.film_id = film_actor.film_id
+GROUP BY film.film_id
+ORDER BY title;
+
+--6d number of 'Hunchback Impossible' films in inventory
+SELECT * FROM film WHERE title = 'Hunchback Impossible';
+SELECT * FROM inventory WHERE film_id = 439;
+
+SELECT inventory.inventory_id, inventory.film_id, inventory.store_id
+FROM inventory
+JOIN film
+ON (inventory.film_id = film.film_id)
+WHERE film.title = 'Hunchback Impossible';
+
+--6e total payment by customer last name alphabetically
+SELECT customer.customer_id, customer.first_name, customer.last_name, SUM(payment.amount) AS total_payment
+FROM payment 
+INNER JOIN customer  
+ON customer.customer_id = payment.customer_id
+GROUP BY customer.customer_id 
+ORDER BY customer.last_name;
