@@ -71,10 +71,11 @@ FROM staff, address
 WHERE staff.address_id = address.address_id;
 
 --6b join staff & payment tables and sum payment amounts
-SELECT staff.staff_id, staff.first_name, staff.last_name, payment.AM as total_amount
+SELECT staff.staff_id, staff.first_name, staff.last_name, sum(payment.amount) AS total_amount
 FROM staff 
-INNER JOIN (SELECT staff_id, SUM(amount) AS AM FROM payment GROUP BY staff_id)payment 
-ON payment.staff_id = staff.staff_id;
+INNER JOIN payment 
+ON staff.staff_id = payment.staff_id
+GROUP BY staff.staff_id;
 
 --6c list films and number of actors
 SELECT film.film_id, film.title, COUNT(film_actor.actor_id) AS total_actors
@@ -101,3 +102,75 @@ INNER JOIN customer
 ON customer.customer_id = payment.customer_id
 GROUP BY customer.customer_id 
 ORDER BY customer.last_name;
+
+--7a subqueries to display movies starting with letters K & Q and in English
+SELECT film_id, title, language_id FROM film
+WHERE title LIKE 'K%' or title LIKE 'Q%'
+	AND (SELECT language_id IN
+		(SELECT language_id FROM language WHERE name = 'English'))
+		ORDER BY film_id;
+	
+--7b subqueries to display all actor in film 'Alone Trip'
+SELECT actor_id, first_name, last_name FROM actor
+WHERE actor_id IN
+	(SELECT actor_id FROM film_actor WHERE film_id IN
+	 	(SELECT film_id FROM film WHERE title = 'Alone Trip'))
+		ORDER BY actor_id;
+
+--7c name & emails of all Canadian customers using join
+SELECT customer_id, first_name, last_name, email FROM customer
+JOIN address ON (customer.address_id = address.address_id)
+JOIN city ON (address.city_id = city.city_id)
+JOIN country ON (city.country_id = country.country_id)
+WHERE country.country = 'Canada'
+ORDER BY customer_id;
+
+--7d all movies categorized as family films
+SELECT title FROM film
+JOIN film_category ON (film.film_id = film_category.film_id)
+JOIN category ON (film_category.category_id = category.category_id)
+WHERE category.name = 'Family'
+ORDER BY title;
+
+--7e most rented movies in descending order
+SELECT film_id, title, rental_duration FROM film
+ORDER BY rental_duration DESC;
+
+--7f how much revenue per store
+SELECT * FROM sales_by_store;
+
+--7g display store ID, city, & country for each store
+SELECT store.store_id, city.city, country.country
+FROM store, address, city, country
+WHERE store.address_id = address.address_id
+AND address.city_id = city.city_id
+AND city.country_id = country.country_id;
+
+--7h list gross revenue in descending order of top 5 genres 
+SELECT category.category_id, category.name, SUM(payment.amount) AS gross_revenue
+FROM payment 
+INNER JOIN rental ON payment.rental_id = rental.rental_id
+INNER JOIN inventory ON inventory.inventory_id = rental.inventory_id
+INNER JOIN film_category ON film_category.film_id = inventory.film_id
+INNER JOIN category ON category.category_id = film_category.category_id
+GROUP BY category.category_id
+ORDER BY gross_revenue
+DESC LIMIT 5;
+
+--8a create view for item 7h
+CREATE VIEW top_5_grossing_genres AS
+SELECT category.category_id, category.name, SUM(payment.amount) AS gross_revenue
+FROM payment 
+INNER JOIN rental ON payment.rental_id = rental.rental_id
+INNER JOIN inventory ON inventory.inventory_id = rental.inventory_id
+INNER JOIN film_category ON film_category.film_id = inventory.film_id
+INNER JOIN category ON category.category_id = film_category.category_id
+GROUP BY category.category_id
+ORDER BY gross_revenue
+DESC LIMIT 5;
+
+--8b display view created for item 8a
+SELECT * FROM top_5_grossing_genres;
+
+--8c delete view created for item 8a
+DROP VIEW top_5_grossing_genres;
