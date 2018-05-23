@@ -11,6 +11,32 @@
         <link rel="stylesheet" href="CSS/style.css">
     </head>
     <body>
+        
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                      <ul class="navbar-nav ml-auto">   
+                        <li class="nav-item">
+                            <a class="nav-link" href="Landing.html">Home</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Plots
+                          </a>
+                          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="Visualization_Temp.html">Temperature</a>
+                            <a class="dropdown-item" href="Visualization_Hum.html">Humidity</a>
+                            <a class="dropdown-item" href="Visualization_Cloud.html">Cloudiness</a>
+                            <a class="dropdown-item" href="Visualization_Wind.html">Wind Speed</a>
+                        </li>
+                         <li class="nav-item">
+                            <a class="nav-link" href="Data.html">Data</a>
+                        </li>
+                    </div>
+        </nav>
+        
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -21,13 +47,13 @@
                         <div class="row">
                             <div class="col-6">
                                 <h3 class="text-center">vs. Max Temperature</h3>
-                                <a href="Visualization1.html">
+                                <a href="Visualization_Temp.html">
                                     <img class="images2 px-1 mb-3" src="images/output_9_0.png" alt="City Latitude vs. Max Temperature">
                                 </a>
                             </div>
                             <div class="col-6">
                                 <h3 class="text-center">vs. Humidity</h3>
-                                <a href="Visualization2.html">
+                                <a href="Visualization_Hum.html">
                                     <img class="images2 px-1 mb-3" src="images/output_11_0.png" alt="City Latitude vs. Humidity">    
                                 </a>
                             </div>
@@ -37,13 +63,13 @@
                             <div class="row">
                                 <div class="col-6">
                                     <h3 class="text-center">vs. Cloudiness</h3>
-                                    <a href="Visualization3.html">
+                                    <a href="Visualization_Cloud.html">
                                         <img class="images2 px-1" src="images/output_13_0.png" alt="City Latitude vs. Cloudiness"> 
                                     </a>
                                 </div>
                                 <div class="col-6">
                                     <h3 class="text-center">vs. Wind Speed</h3>
-                                    <a href="Visualization4.html">
+                                    <a href="Visualization_Wind.html">
                                         <img class="images2 px-1" src="images/output_15_0.png" alt="City Latitude vs. Wind Speed">
                                     </a>
                                 </div>
