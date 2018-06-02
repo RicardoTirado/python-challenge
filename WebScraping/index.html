@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Mission to Mars</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+<body>
+  <div class="container">
+
+    <div class="jumbotron text-center">
+      <h1>Mission to Mars</h1>
+      <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
+    </div>
+
+    <!-- Latest Mars News -->
+    <div class="row">
+      <div class="col-md-12">
+        <h2 class="heading">Latest Mars News</h2>
+        <h4 class="heading">{{mars.news_title}}</h4>
+        <small>{{mars.news_p}}</small>
+        <hr>
+      </div>
+    </div>
+
+        <!-- Mars Image, Current Weather, Mars Facts -->
+    <div class="row">
+      <div class="col-md-8">
+        <h2 class="heading">Featured Mars Image</h2>
+        <img src="{{mars.featured_image_url}}" class="img-responsive">
+      </div><!-- col-md-8 -->
+      <div class="col-md-4">
+          <div class="row">
+              <div class="col-md-12 panel panel-default">
+                  <h3 class="heading">Current Weather on Mars</h2>
+                  <p>{{mars.mars_weather}}</p> 
+              </div><!-- col-md-12 -->
+              <div class="col-md-12">
+                  <h3 class="heading">Mars Facts</h2>
+                  <p>{{mars.mars_table | safe}}</p>
+              </div><!-- col-md-12 -->
+          </div><!-- row -->
+      </div><!-- col-md-4 -->
+    </div><!-- row -->
+    <div class="row">    
+      <hr>   
+      <div class="col-md-12"> 
+      <h2 class="heading text-center">Mars Hemispheres</h2>
+      </div><!-- col-md-12 -->
+      <hr>
+    </div><!-- row -->
+    <div class="row"> 
+        <table style="width:100%" border=1>
+            <!-- Generate table rows -->
+            <tr><!-- Get the list of images -->
+                  {% if mars.image_urls %}
+                  {% for img in mars.image_urls %}
+                  <td><img src="{{ img }}" class="img-responsive">
+                  </td>
+                  {% endfor %}
+                  {% endif %}
+            </tr>
+            <tr><!-- Get the list of image descriptions -->
+                {% if mars.titles %}
+                {% for title in mars.titles %}
+                <td><br>{{ title }}<br><br>
+                </td>
+                {% endfor %}
+                {% endif %}
+            </tr>
+        </table>
+      </div><!-- row -->
+    </div><!-- row -->
+  </div><!-- container -->
+</body>
+
+</html>
