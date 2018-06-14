@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>BellyButtonBioDiversity</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Row 1 -->
+        <div class="row">
+          <div class="col-sm-12 col-md-8">
+            <h1>Belly Button Biodiversity</h1>
+            <h1>Dashboard</h1>
+            <h4>Use interactive charts to explore dataset</h4>
+          </div>
+        </div>
+    
+        <!-- Row 2 -->
+        <div class="row">
+          <div class="col-sm-3">
+            <select id="selDataset" onchange="getData(this.value)">
+              {% for name in sample_names %}
+                <option value="{{ name }}">{{ name }}</option>
+              {% endfor %}
+          </select></div>
+          
+          <div class="col-sm-3">
+              <div class="col-6">
+                  <div id="pie"></div>
+                  <script>
+                    Plotly.d3.json('pie', function(error, data){
+                      if (error) return console.warn(error);
+                      
+                      var layout = {
+                        title: "XXX"}
+                      var PIE = document.getElementById('pie');
+                      Plotly.plot(PIE, data, layout);
+                    }
+                  </script>
+              </div>
+          </div>
+                
+        </div>
+  
+      </div>
+
+      <script>
+      // for (var i = 0; i <= 10; i++) { 
+      //   d3.select("#selDataset").append("option").text(i.toString());
+      // }
+      </script>
+          
+
+      <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+      <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+
+</html>

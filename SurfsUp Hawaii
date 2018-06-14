@@ -1,9 +1,0 @@
-CREATE Table hawaii_stations (
-	station VARCHAR (20) PRIMARY KEY NOT NULL,
-	name VARCHAR (50) NOT NULL,
-	latitude INTEGER (10) NOT NULL,
-	longitude INTEGER (10) NOT NULL,
-	elevation INTEGER (10) NOT NULL,
-	);
-	
-COPY hawaii_stations FROM 'OC(C:)/Users/rxt2/Desktop/hw/SurfsUp/hawaii_stations' WITH (FORMAT csv);
